@@ -13,7 +13,6 @@ Game::Game()
 void Game::run()
 {
     //Initializations
-    pushState<states::Game>(shared_from_this());
 
     //Parameters
     constexpr unsigned TPS = 5;                                    //ticks per seconds
