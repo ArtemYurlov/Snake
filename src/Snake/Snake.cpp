@@ -29,6 +29,10 @@ bool Snake::move(){
     }
 
     if (auto sptr = _pGame.lock()) //promote weak_ptr to shared_ptr to use it
+    {
+        if (head.x<0 || head.y <0 || head.x>=100 || head.y>= 100) //TODO change the 100 to kGridSize
+            return false; //we went out of bounds
+
         switch(sptr -> getBoardStateAt(head.x, head.y))
         {
             case states::Game::BoardState::kEmpty:
@@ -41,11 +45,13 @@ bool Snake::move(){
             
             case states::Game::BoardState::kFood:
                 length += 1;
+                sptr -> foodEatenAt(head.x, head.y);
                 break;
 
             default:
                 break;
-        }
+        } //switch
+    } //if sptr
     
     //execute movmement
     currentDirection = futureDirection;

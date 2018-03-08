@@ -11,9 +11,9 @@ namespace states{
 class Snake{
     public:
     enum Direction{kNorth, kEast, kSouth, kWest};
-    Snake(std::weak_ptr<states::Game> game, sf::Vector2i head = sf::Vector2i{5,5}, Snake::Direction dir = Snake::Direction::kEast);
+    Snake(std::weak_ptr<states::Game> game, sf::Vector2i head = sf::Vector2i{2,2}, Snake::Direction dir = Snake::Direction::kEast);
     
-    unsigned int length = 10;
+    unsigned int length = 3;
     std::list<sf::Vector2i> snake;    
     Direction currentDirection = Direction::kWest; //the direction the snake is currently moving in
     Direction futureDirection = Direction::kWest;   // the direction the snake will be moving at next tick
