@@ -28,7 +28,7 @@ void Game::handleEvent(sf::Event e)
                     if (auto sptr = _pGame.lock())
                         sptr->popState();
                     break;
-
+                //TODO move all these to snake controller
                 case sf::Keyboard::W:
                     snake->turn(Snake::Direction::kNorth);
                     break;
@@ -71,17 +71,17 @@ void Game::update(sf::Time deltaTime)
     _grid = {};
     for (int i = 0; i < 100; ++i)
     {
-        _grid[i][0] = boardState::kWall;
-        _grid[i][99] = boardState::kWall;
-        _grid[0][i] = boardState::kWall;
-        _grid[99][i] = boardState::kWall;
+        _grid[i][0] = BoardState::kWall;
+        _grid[i][99] = BoardState::kWall;
+        _grid[0][i] = BoardState::kWall;
+        _grid[99][i] = BoardState::kWall;
     }
         
     for (auto v : snake->snake){
 
         if (v.x >= 100 || v.x < 0 || v.y < 0 || v.y >= 100)
             continue;
-        _grid[v.x][v.y] = boardState::kSnake;
+        _grid[v.x][v.y] = BoardState::kSnake;
     }
 }
 
@@ -120,5 +120,16 @@ void Game::render(sf::RenderTarget &renderer)
             renderer.draw(box);
         }
 }
+
+
+//------------Own stuff-----------
+Game::BoardState Game::getBoardStateAt(unsigned int x, unsigned int y)
+{
+    if (x >= 100 || y >= 100)
+        throw "_grid out of bounds!";
+
+    return _grid[x][y];
+}
+
 
 } // namespace states

@@ -28,6 +28,25 @@ bool Snake::move(){
             break;
     }
 
+    if (auto sptr = _pGame.lock()) //promote weak_ptr to shared_ptr to use it
+        switch(sptr -> getBoardStateAt(head.x, head.y))
+        {
+            case states::Game::BoardState::kEmpty:
+                break; //finish the movement
+
+            case states::Game::BoardState::kWall:
+            case states::Game::BoardState::kSnake:
+                return false; //movement unsuccessful
+                break;
+            
+            case states::Game::BoardState::kFood:
+                length += 1;
+                break;
+
+            default:
+                break;
+        }
+    
     //execute movmement
     currentDirection = futureDirection;
 

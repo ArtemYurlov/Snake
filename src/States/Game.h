@@ -15,7 +15,7 @@ class Game : public State, public std::enable_shared_from_this<Game>
 {
   public:
     Game(std::weak_ptr<::Game> stateMachine);
-
+    //Methods called by the StateMachine (parent)
     void init()                             override;
 
     void handleEvent(sf::Event e)           override;
@@ -24,9 +24,13 @@ class Game : public State, public std::enable_shared_from_this<Game>
     void fixedUpdate(sf::Time deltaTime)    override;
     void render(sf::RenderTarget &renderer) override;
 
+    //Own stuff
+    enum BoardState{kEmpty, kFood, kSnake, kWall};
+    BoardState getBoardStateAt(unsigned int x, unsigned int y);
+
   private:
-    enum boardState{kEmpty, kFood, kSnake, kWall};
-    typedef std::array<std::array<boardState, 100>, 100> Grid;
+    
+    typedef std::array<std::array<BoardState, 100>, 100> Grid;
     Grid _grid = {}; // 2-d snake grid initialized to 0s
     
 

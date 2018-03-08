@@ -18,7 +18,7 @@ class Snake{
     Direction currentDirection = Direction::kWest; //the direction the snake is currently moving in
     Direction futureDirection = Direction::kWest;   // the direction the snake will be moving at next tick
 
-    bool move(); // true if success, TODO: false if collision
+    bool move(); // true if success, false if collision
 
     bool turn(Snake::Direction dir); // true if success, false if imposible turn
 
