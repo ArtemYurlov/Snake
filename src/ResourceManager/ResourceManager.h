@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "includes.h"
+
 template <typename Resource>
 class ResourceManager
 {
@@ -13,6 +15,7 @@ class ResourceManager
     ResourceManager(CrString folder, CrString extention)
         : _folder("./res/" + folder + "/"), _extention("." + extention)
     {
+        initializeDataSizePairs(dataSizePairs); // from includes.h which gives us dataSizePairs
     }
 
     const Resource &get(CrString name)
@@ -35,19 +38,39 @@ class ResourceManager
         Resource r;
 
         //if the resource fails to load, then it adds a default "fail" resource
-        if (!r.loadFromFile(getFullname(name)))
+        // if (!r.loadFromFile(getFullname(name)))
+        // {
+        //     Resource fail;
+        //     fail.loadFromFile(_folder + "_err_" + _extention);
+        //     _resources.insert(std::make_pair(name, fail));
+        // }
+        // else
+        // {
+        //     _resources.insert(std::make_pair(name, r));
+        // }
+        
+        //loadding from memory
+        std::pair<const void*, const std::size_t> resInMem = dataSizePairs.at(getVarName(name));
+        if(r.loadFromMemory(resInMem.first, resInMem.second))
         {
-            Resource fail;
-            fail.loadFromFile(_folder + "_err_" + _extention);
-            _resources.insert(std::make_pair(name, fail));
+            _resources.insert(std::make_pair(name, r));
         }
         else
         {
-            _resources.insert(std::make_pair(name, r));
+            std::pair<const void*, const std::size_t> failInMem = dataSizePairs.at(getVarName("_err_")); //NOTE MIGHT FAIL ITSELF
+            Resource fail;
+            fail.loadFromMemory(failInMem.first, failInMem.second);
+            _resources.insert(std::make_pair(name, fail));
+            //std::cout << "RES " << name << " failed to load from memory!";
         }
     }
 
   private:
+    std::string getVarName (CrString name)
+    {
+        return std::string(name) + "_" + std::string(_extention).substr(1,_extention.size());
+    }
+    
     std::string getFullname(CrString name)
     {
         return _folder + name + _extention;
@@ -57,4 +80,5 @@ class ResourceManager
     const std::string _extention;
 
     std::unordered_map<std::string, Resource> _resources;
+    std::unordered_map<std::string, std::pair<const void*, const std::size_t>> dataSizePairs;
 };
