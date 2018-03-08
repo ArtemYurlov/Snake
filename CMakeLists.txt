@@ -136,7 +136,6 @@ file(READ "./build/temp.h" PAIRS)
 file(REMOVE "./build/temp.h") #remove the file that we used to fix problems wth variables (because of concurrency of the build)
 file(APPEND "./src/ResourceManager/includes.h" "\ninline void initializeDataSizePairs(std::unordered_map<std::string, std::pair<const void*, const std::size_t>> & dataSizePairs)\n{\n  dataSizePairs = {\n${PAIRS}\n   };\n}")
 
-include_directories("./res/")
 
 #install(DIRECTORY ./res/
 #  DESTINATION ./res/
