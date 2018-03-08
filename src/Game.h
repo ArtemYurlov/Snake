@@ -28,7 +28,7 @@ class Game : public std::enable_shared_from_this<::Game>
     states::State &getCurrentState();
 
     sf::RenderWindow _window;
-    std::vector<std::unique_ptr<states::State>> _states;
+    std::vector<std::shared_ptr<states::State>> _states;
 
     FPSCounter fpsCounter;
 
@@ -38,5 +38,6 @@ class Game : public std::enable_shared_from_this<::Game>
 template <typename T, typename... Args>
 void Game::pushState(Args &&... args)
 {
-    _states.push_back(std::make_unique<T>(std::forward<Args>(args)...));
+    _states.push_back(std::make_shared<T>(std::forward<Args>(args)...));
+    _states.back()->init();
 }

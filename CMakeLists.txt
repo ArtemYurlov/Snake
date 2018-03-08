@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-project(eNN-rm)
+project(Snake)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pedantic -static -fopenmp -Wall")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")

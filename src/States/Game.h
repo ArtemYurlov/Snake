@@ -16,6 +16,8 @@ class Game : public State, public std::enable_shared_from_this<Game>
   public:
     Game(std::weak_ptr<::Game> stateMachine);
 
+    void init()                             override;
+
     void handleEvent(sf::Event e)           override;
     void handleInput()                      override;
     void update(sf::Time deltaTime)         override;

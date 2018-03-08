@@ -9,9 +9,13 @@ namespace states{
 
 Game::Game(std::weak_ptr<::Game> StateMachine)
     : State{StateMachine}
-    , snake{std::make_shared<Snake>()}
 {
 
+}
+
+void Game::init()
+{
+    snake = std::make_shared<Snake>(shared_from_this());
 }
 
 void Game::handleEvent(sf::Event e)
@@ -43,11 +47,11 @@ void Game::handleEvent(sf::Event e)
                 default:
                     break;
                 
-                case sf::Keyboard::P:
-                    if (gMode == gameMode::kClassic)
-                        gMode = kRecursive;
-                    else
-                        gMode = kClassic;
+                // case sf::Keyboard::P:
+                //     if (gMode == gameMode::kClassic)
+                //         gMode = kRecursive;
+                //     else
+                //         gMode = kClassic;
 
             }
             break;
@@ -83,7 +87,7 @@ void Game::update(sf::Time deltaTime)
 
 void Game::fixedUpdate(sf::Time deltaTime)
 {
-    if (gMode == kClassic)
+    // if (gMode == kClassic)
         snake->move();
 
     //std::cout << snake->snake.front().x <<" "<< snake->snake.front().y << " "; 
@@ -115,11 +119,6 @@ void Game::render(sf::RenderTarget &renderer)
             box.setPosition(50+row*6, 50+col*6);
             renderer.draw(box);
         }
-        
-
-    // sf::RectangleShape bg = sf::RectangleShape();
-    // bg.setFillColor({52, 152, 219}); bg.setSize({100,100});
-    // renderer.draw(bg);
 }
 
 } // namespace states

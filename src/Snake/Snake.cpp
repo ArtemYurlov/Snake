@@ -1,10 +1,12 @@
 #include "Snake.h"
+#include "States/Game.h"
 
 #include <stdlib.h> /* abs */
 
-Snake::Snake(sf::Vector2i head, Snake::Direction dir)
-    : snake{head},
-    futureDirection{dir}
+Snake::Snake(std::weak_ptr<states::Game> game, sf::Vector2i head, Snake::Direction dir)
+    : _pGame{game}
+    , snake{head}
+    , futureDirection{dir}
 {}
 
 bool Snake::move(){

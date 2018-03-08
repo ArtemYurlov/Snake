@@ -17,6 +17,8 @@ class State
     {
     }
 
+    virtual void init() {}
+
     virtual void handleEvent(sf::Event e)           = 0;
     virtual void handleInput()                      = 0;
     virtual void update(sf::Time deltaTime)         = 0; //every frame update
