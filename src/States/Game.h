@@ -3,6 +3,7 @@
 #include "State.h"
 
 #include "../Snake/Snake.h"
+#include "../Snake/Controller.h"
 
 #include <array>
 #include <memory>
@@ -44,7 +45,10 @@ class Game : public State, public std::enable_shared_from_this<Game>
     typedef std::array<std::array<BoardState, kGridSize>, kGridSize> Grid;
     Grid _grid = {}; // 2-d snake grid initialized to 0s   
 
+    //children
     std::shared_ptr<Snake> snake;
+    std::shared_ptr<Controller> controller;
+
     std::vector<sf::Vector2i> food;
 
     std::unique_ptr<Random<>> rng;

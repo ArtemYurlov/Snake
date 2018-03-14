@@ -9,7 +9,8 @@ Snake::Snake(std::weak_ptr<states::Game> game, sf::Vector2i head, Snake::Directi
     , futureDirection{dir}
 {}
 
-bool Snake::move(){
+bool Snake::move()
+{
 
     sf::Vector2i head = sf::Vector2i{snake.front()}; //new head of the snake (if the move is successful)
     switch(futureDirection)
@@ -66,10 +67,12 @@ bool Snake::move(){
 
 }
 
-bool Snake::turn(Snake::Direction dir){
+bool Snake::turn(Snake::Direction dir)
+{
     if (abs(currentDirection - dir) == 2) // if we try and turn 180
         return false;
 
     futureDirection = dir;
     return true;
 }
+

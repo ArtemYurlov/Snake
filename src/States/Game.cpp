@@ -3,6 +3,8 @@
 #include "../Game.h"
 //#include "../Misc/RNG.h" //for random food
 
+#include "../Snake/HumanController.h" //TODO move to factory
+
 #include <memory>
 #include <iostream>
 
@@ -17,6 +19,7 @@ Game::Game(std::weak_ptr<::Game> StateMachine)
 void Game::init()
 {
     snake = std::make_shared<Snake>(shared_from_this());
+    controller = std::make_shared<HumanController>(shared_from_this(), snake); //TODO move to factory
         rng = std::make_unique<Random<>>(); //for spawnFoodAtRandom
     spawnFoodAtRandom();
 }
@@ -31,22 +34,7 @@ void Game::handleEvent(sf::Event e)
                     if (auto sptr = _pGame.lock())
                         sptr->popState();
                     break;
-                //TODO move all these to snake controller
-                case sf::Keyboard::W:
-                    snake->turn(Snake::Direction::kNorth);
-                    break;
                 
-                case sf::Keyboard::S:
-                    snake->turn(Snake::Direction::kSouth);
-                    break;
-
-                case sf::Keyboard::A:
-                    snake->turn(Snake::Direction::kWest);
-                    break;
-
-                case sf::Keyboard::D:
-                    snake->turn(Snake::Direction::kEast);
-                    break;
                 default:
                     break;
                 
@@ -61,6 +49,8 @@ void Game::handleEvent(sf::Event e)
             default:
                 break;
     }
+
+    controller->processEvent(e);
 }
 
 void Game::handleInput()
@@ -71,6 +61,7 @@ void Game::handleInput()
 void Game::update(sf::Time deltaTime)
 {
     buildGrid();
+    controller->update();
 }
 
 void Game::buildGrid()
@@ -101,6 +92,7 @@ void Game::buildGrid()
 void Game::fixedUpdate(sf::Time deltaTime)
 {
     // if (gMode == kClassic)
+        snake->turn(controller->getAction());
         snake->move();
 
     //std::cout << snake->snake.front().x <<" "<< snake->snake.front().y << " "; 
